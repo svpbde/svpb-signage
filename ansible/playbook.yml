@@ -23,7 +23,7 @@
   become: true
   hosts: all
   tasks:
-    - name: Basic software via apt
+    - name: Software needed for signage functionality
       ansible.builtin.apt:
         pkg:
           - cec-utils
@@ -32,9 +32,15 @@
           - openbox
           - python3-xdg
           - unclutter
-          - vim-nox
           - vlc
           - vlc-plugin-base
+    - name: Utilities
+      ansible.builtin.apt:
+        pkg:
+          - htop
+          - lm-sensors
+          - tmux
+          - vim-nox
 
 
 - name: Config files
