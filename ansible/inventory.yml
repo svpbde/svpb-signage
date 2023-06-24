@@ -1,0 +1,4 @@
+all:
+  hosts:
+    signage:
+      ansible_user: svpb

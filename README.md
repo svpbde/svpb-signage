@@ -21,3 +21,15 @@ Hardware
 Software
 --------
 The computer runs Debian with Openbox.
+
+
+### Installation
+* Install debian on the signage computer. Installer settings:
+    * System name: `signage`
+    * Create a normal user named `svpb` (this is not the signage user, which will be created lateron via ansible)
+    * Deselect "Debian desktop environment" and "Gnome", select "SSH Server"
+* Boot the freshly installed system. Login as root and configure sudo: `apt install sudo` & `usermod -aG sudo svpb`.
+* From your own computer
+    * Add SSH Key: `ssh-copy-id -i ~/.ssh/id_ed25519 svpb@signage`
+    * Run ansible: `ansible-playbook playbook.yml -i inventory.yml --ask-become-pass`
+* Reboot
