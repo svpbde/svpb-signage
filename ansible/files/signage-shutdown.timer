@@ -1,0 +1,9 @@
+[Unit]
+Description=Shutdown every day in the evening
+
+[Timer]
+OnCalendar=*-*-* 19:00
+Unit=systemd-poweroff.service 
+
+[Install]
+WantedBy=timers.target

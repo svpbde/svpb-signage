@@ -1,0 +1,120 @@
+---
+
+# An Ansible playbook to install a digital signage system on a Debian machine
+
+
+- name: Signage user
+  become: true
+  hosts: all
+  tasks:
+    - name: Ensure svpb-signage user exists
+      ansible.builtin.user:
+        name: svpb-signage
+        comment: "SVPB signage user"
+        state: present
+        shell: /bin/bash
+        groups:
+          - audio
+          - video
+          - render
+
+
+- name: Basic software installation
+  become: true
+  hosts: all
+  tasks:
+    - name: Basic software via apt
+      ansible.builtin.apt:
+        pkg:
+          - cec-utils
+          - chromium
+          - lightdm-autologin-greeter
+          - openbox
+          - python3-xdg
+          - unclutter
+          - vim-nox
+          - vlc
+          - vlc-plugin-base
+
+
+- name: Config files
+  become: true
+  hosts: all
+  tasks:
+    - name: Ensure openbox config directory exists
+      ansible.builtin.file:
+        dest: /home/svpb-signage/.config/openbox/
+        state: directory
+        owner: svpb-signage
+        group: svpb-signage
+    - name: Ensure openbox config is placed
+      ansible.builtin.copy:
+        dest: /home/svpb-signage/.config/openbox/rc.xml
+        src: files/openbox-rc.xml
+        owner: svpb-signage
+        group: svpb-signage
+    - name: Ensure openbox autostart config is placed
+      ansible.builtin.copy:
+        dest: /home/svpb-signage/.config/openbox/autostart
+        src: files/openbox-autostart
+        owner: svpb-signage
+        group: svpb-signage
+    - name: Ensure lightdm config is placed
+      ansible.builtin.copy:
+        dest: /etc/lightdm/lightdm.conf.d/lightdm-autologin-greeter.conf
+        src: files/lightdm-autologin-greeter.conf
+
+
+- name: Signage scripts
+  become: true
+  hosts: all
+  tasks:
+    - name: Ensure signage directory exists
+      ansible.builtin.file:
+        dest: /opt/svpb-signage/
+        state: directory
+        owner: svpb-signage
+        group: svpb-signage
+    - name: Ensure video loop script is placed
+      ansible.builtin.copy:
+        dest: /opt/svpb-signage/signage-video-loop.sh
+        src: files/signage-video-loop.sh
+        owner: svpb-signage
+        group: svpb-signage
+        mode: 0744
+    - name: Ensure video website loop script is placed
+      ansible.builtin.copy:
+        dest: /opt/svpb-signage/signage-video-website-loop.sh
+        src: files/signage-video-website-loop.sh
+        owner: svpb-signage
+        group: svpb-signage
+        mode: 0744
+    - name: Enable video website loop
+      ansible.builtin.file:
+        dest: /opt/svpb-signage/signage-run.sh
+        src: signage-video-website-loop.sh
+        owner: svpb-signage
+        group: svpb-signage
+        state: link
+    - name: Ensure default image is placed
+      ansible.builtin.copy:
+        dest: /opt/svpb-signage/default_image.png
+        src: files/default_image.png
+        owner: svpb-signage
+        group: svpb-signage
+
+
+- name: Shutdown timer
+  become: true
+  hosts: all
+  tasks:
+    - name: Ensure shutdown timer is placed
+      ansible.builtin.copy:
+        dest: /etc/systemd/system/signage-shutdown.timer
+        src: files/signage-shutdown.timer
+        owner: root
+        group: root
+    - name: Ensure shutdown timer is enabled
+      ansible.builtin.service:
+        name: signage-shutdown.timer
+        enabled: true

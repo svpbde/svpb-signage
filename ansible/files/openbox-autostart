@@ -1,0 +1,2 @@
+sleep 5
+/opt/svpb-signage/signage-run.sh
