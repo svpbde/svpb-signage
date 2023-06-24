@@ -124,3 +124,27 @@
       ansible.builtin.service:
         name: signage-shutdown.timer
         enabled: true
+
+
+- name: Configure screen rotation
+  become: true
+  hosts: all
+  tasks:
+    - name: Place grub config
+      ansible.builtin.copy:
+        dest: /etc/default/grub.d/grub-screen-rotation.cfg
+        src: files/grub-screen-rotation.cfg
+        owner: root
+        group: root
+      notify: Update grub
+    - name: Place X11 config
+      ansible.builtin.copy:
+        dest: /etc/X11/xorg.conf.d/X-screen-rotation.conf
+        src: files/X-screen-rotation.conf
+        owner: root
+        group: root
+
+  handlers:
+    - name: Update grub
+      ansible.builtin.command:
+        cmd: update-grub
