@@ -31,5 +31,6 @@ The computer runs Debian with Openbox.
 * Boot the freshly installed system. Login as root and configure sudo: `apt install sudo` & `usermod -aG sudo svpb`.
 * From your own computer
     * Add SSH Key: `ssh-copy-id -i ~/.ssh/id_ed25519 svpb@signage`
+    * Clone this repo & `cd ansible`
     * Run ansible: `ansible-playbook playbook.yml -i inventory.yml --ask-become-pass`
 * Reboot
