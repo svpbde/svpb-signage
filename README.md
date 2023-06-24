@@ -34,3 +34,8 @@ The computer runs Debian with Openbox.
     * Clone this repo & `cd ansible`
     * Run ansible: `ansible-playbook playbook.yml -i inventory.yml --ask-become-pass`
 * Reboot
+
+### Testing
+The system can easily be tested on a virtual machine.
+Using the Vagrantfile in this repo with Vagrant automatically spins up a working VM.
+However, describing how to use Vagrant is out of the scope of this document.
