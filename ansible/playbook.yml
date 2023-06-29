@@ -15,8 +15,9 @@
         shell: /bin/bash
         groups:
           - audio
-          - video
+          - dialout
           - render
+          - video
 
 
 - name: Basic software installation
@@ -110,10 +111,30 @@
         group: svpb-signage
 
 
-- name: Shutdown timer
+- name: Systemd services and timer
   become: true
   hosts: all
   tasks:
+    - name: Ensure TV on service is placed
+      ansible.builtin.copy:
+        dest: /etc/systemd/system/signage-tv-on.service
+        src: files/signage-tv-on.service
+        owner: root
+        group: root
+    - name: Ensure TV on service is enabled
+      ansible.builtin.service:
+        name: signage-tv-on.service
+        enabled: true
+    - name: Ensure TV standby service is placed
+      ansible.builtin.copy:
+        dest: /etc/systemd/system/signage-tv-standby.service
+        src: files/signage-tv-standby.service
+        owner: root
+        group: root
+    - name: Ensure TV standby service is enabled
+      ansible.builtin.service:
+        name: signage-tv-standby.service
+        enabled: true
     - name: Ensure shutdown timer is placed
       ansible.builtin.copy:
         dest: /etc/systemd/system/signage-shutdown.timer

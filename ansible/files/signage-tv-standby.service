@@ -1,0 +1,12 @@
+[Unit]
+Description=Send TV to standby before system shutdown
+DefaultDependencies=no
+Before=halt.target shutdown.target reboot.target
+
+[Service]
+Type=oneshot
+User=svpb-signage
+ExecStart=/bin/sh -c 'exec echo standby 0 | cec-client -s -d 1'
+
+[Install]
+WantedBy=halt.target shutdown.target reboot.target

@@ -1,0 +1,11 @@
+[Unit]
+Description=Turn on TV via HDMI-CEC by setting self as active source
+
+[Service]
+Type=oneshot
+User=svpb-signage
+ExecStart=/bin/sh -c 'exec echo as | cec-client -s -d 1'
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target
