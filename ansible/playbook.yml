@@ -30,11 +30,10 @@
           - cec-utils
           - chromium
           - lightdm-autologin-greeter
+          - mpv
           - openbox
           - python3-xdg
           - unclutter
-          - vlc
-          - vlc-plugin-base
     - name: Utilities
       ansible.builtin.apt:
         pkg:
@@ -71,6 +70,18 @@
       ansible.builtin.copy:
         dest: /etc/lightdm/lightdm.conf.d/lightdm-autologin-greeter.conf
         src: files/lightdm-autologin-greeter.conf
+    - name: Ensure mpv config directory exists
+      ansible.builtin.file:
+        dest: /home/svpb-signage/.config/mpv/
+        state: directory
+        owner: svpb-signage
+        group: svpb-signage
+    - name: Ensure mpv config is placed
+      ansible.builtin.copy:
+        dest: /home/svpb-signage/.config/mpv/mpv.conf
+        src: files/mpv.conf
+        owner: svpb-signage
+        group: svpb-signage
 
 
 - name: Signage scripts
