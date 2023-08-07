@@ -1,0 +1,11 @@
+[Unit]
+Description=Play fullscreen video 
+PartOf=graphical-session.target
+
+[Service] 
+ExecStart=cvlc --no-video-title-show --no-loop --play-and-exit --fullscreen /opt/svpb-signage/content/video.mp4
+Type=simple
+Restart=on-failure 
+
+[Install] 
+WantedBy=xsession.target

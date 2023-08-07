@@ -1,0 +1,11 @@
+[Unit]
+Description=Open website in chromium's kiosk mode 
+PartOf=graphical-session.target
+
+[Service] 
+ExecStart=chromium --kiosk --app=https://svpb.de/ --noerrdialogs --enable-features=OverlayScrollbar --disable-restore-session-state
+Type=simple
+Restart=on-failure 
+
+[Install] 
+WantedBy=xsession.target

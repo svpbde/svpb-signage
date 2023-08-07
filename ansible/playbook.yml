@@ -39,6 +39,7 @@
       ansible.builtin.apt:
         pkg:
           - htop
+          - intel-gpu-tools
           - lm-sensors
           - tmux
           - vim-nox
@@ -82,31 +83,28 @@
         state: directory
         owner: svpb-signage
         group: svpb-signage
-    - name: Ensure video loop script is placed
-      ansible.builtin.copy:
-        dest: /opt/svpb-signage/signage-video-loop.sh
-        src: files/signage-video-loop.sh
-        owner: svpb-signage
-        group: svpb-signage
-        mode: 0744
-    - name: Ensure video website loop script is placed
-      ansible.builtin.copy:
-        dest: /opt/svpb-signage/signage-video-website-loop.sh
-        src: files/signage-video-website-loop.sh
-        owner: svpb-signage
-        group: svpb-signage
-        mode: 0744
-    - name: Enable video website loop
+    - name: Ensure user systemd directory exists
       ansible.builtin.file:
-        dest: /opt/svpb-signage/signage-run.sh
-        src: signage-video-website-loop.sh
+        dest: /home/svpb-signage/.config/systemd/user
+        state: directory
         owner: svpb-signage
         group: svpb-signage
-        state: link
-    - name: Ensure default image is placed
+    - name: Ensure user xsession target is placed
       ansible.builtin.copy:
-        dest: /opt/svpb-signage/default_image.png
-        src: files/default_image.png
+        dest: /home/svpb-signage/.config/systemd/user/xsession.target
+        src: files/xsession.target
+        owner: svpb-signage
+        group: svpb-signage
+    - name: Ensure website service is placed
+      ansible.builtin.copy:
+        dest: /home/svpb-signage/.config/systemd/user/signage-website.service
+        src: files/signage-website.service
+        owner: svpb-signage
+        group: svpb-signage
+    - name: Ensure video service is placed
+      ansible.builtin.copy:
+        dest: /home/svpb-signage/.config/systemd/user/signage-video.service
+        src: files/signage-video.service
         owner: svpb-signage
         group: svpb-signage
 
