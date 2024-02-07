@@ -109,16 +109,15 @@
         state: directory
         owner: svpb-signage
         group: svpb-signage
-    - name: Ensure user xsession target is placed
+    - name: Ensure systemd units are placed
+      loop:
+        - xsession.target
+        - signage-cloud-sync.timer
+        - signage-video.service
+        - signage-website.service
       ansible.builtin.copy:
-        dest: /home/svpb-signage/.config/systemd/user/xsession.target
-        src: files/xsession.target
-        owner: svpb-signage
-        group: svpb-signage
-    - name: Ensure website service is placed
-      ansible.builtin.copy:
-        dest: /home/svpb-signage/.config/systemd/user/signage-website.service
-        src: files/signage-website.service
+        dest: /home/svpb-signage/.config/systemd/user/{{ item }}
+        src: files/{{ item }}
         owner: svpb-signage
         group: svpb-signage
     - name: Ensure cloud synchronization service is placed
@@ -127,22 +126,10 @@
         src: files/signage-cloud-sync.service
         owner: svpb-signage
         group: svpb-signage
-    - name: Ensure cloud synchronization timer is placed
-      ansible.builtin.copy:
-        dest: /home/svpb-signage/.config/systemd/user/signage-cloud-sync.timer
-        src: files/signage-cloud-sync.timer
-        owner: svpb-signage
-        group: svpb-signage
     - name: Ensure cloud synchronization credential file is placed
       ansible.builtin.template:
         dest: /home/svpb-signage/.netrc
         src: files/dotnetrc
-        owner: svpb-signage
-        group: svpb-signage
-    - name: Ensure video service is placed
-      ansible.builtin.copy:
-        dest: /home/svpb-signage/.config/systemd/user/signage-video.service
-        src: files/signage-video.service
         owner: svpb-signage
         group: svpb-signage
 
