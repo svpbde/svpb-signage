@@ -1,0 +1,9 @@
+---
+# Copy this file to cloud_vars.yml and insert credentials
+
+cloud_type: nextcloud  # nextcloud or owncloud
+cloud_domain: cloud.example.com
+cloud_user: signage-user
+# fresh auth token generated in the cloud's web interface on the security tab  
+cloud_auth_token: secret-cloud-token
+cloud_path: path/to/directory/containing/video/file/in/cloud

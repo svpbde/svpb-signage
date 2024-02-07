@@ -22,6 +22,8 @@ Software
 --------
 The computer runs Debian with Openbox.
 
+### Preparing ansible configuration
+In `ansible\vars`, copy `cloud_vars.yml.example` to `cloud_vars.yml` and fill in the data of your nextcloud or owncloud hosting your signage video.
 
 ### Installation
 * Install debian on the signage computer. Installer settings:

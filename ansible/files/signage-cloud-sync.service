@@ -1,0 +1,11 @@
+[Unit]
+Description=Synchronize video from cloud to local storage
+PartOf=graphical-session.target
+
+[Service] 
+ExecStart={{ cloud_type }}cmd -n --non-interactive --path "{{ cloud_path }}" /opt/svpb-signage/content https://{{ cloud_domain }}
+Type=oneshot
+Restart=on-failure 
+
+[Install] 
+WantedBy=xsession.target

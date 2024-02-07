@@ -23,6 +23,12 @@
 - name: Basic software installation
   become: true
   hosts: all
+  vars:
+    - cloud_pkg_map:
+        nextcloud: nextcloud-desktop-cmd
+        owncloud: owncloud-client-cmd
+  vars_files:
+    - vars/cloud_vars.yml
   tasks:
     - name: Software needed for signage functionality
       ansible.builtin.apt:
@@ -31,6 +37,7 @@
           - chromium
           - lightdm-autologin-greeter
           - mpv
+          - "{{ cloud_pkg_map[cloud_type] }}"
           - openbox
           - python3-xdg
           - unclutter
@@ -87,10 +94,12 @@
 - name: Signage scripts
   become: true
   hosts: all
+  vars_files:
+    - vars/cloud_vars.yml
   tasks:
     - name: Ensure signage directory exists
       ansible.builtin.file:
-        dest: /opt/svpb-signage/
+        dest: /opt/svpb-signage/content/
         state: directory
         owner: svpb-signage
         group: svpb-signage
@@ -110,6 +119,24 @@
       ansible.builtin.copy:
         dest: /home/svpb-signage/.config/systemd/user/signage-website.service
         src: files/signage-website.service
+        owner: svpb-signage
+        group: svpb-signage
+    - name: Ensure cloud synchronization service is placed
+      ansible.builtin.template:
+        dest: /home/svpb-signage/.config/systemd/user/signage-cloud-sync.service
+        src: files/signage-cloud-sync.service
+        owner: svpb-signage
+        group: svpb-signage
+    - name: Ensure cloud synchronization timer is placed
+      ansible.builtin.copy:
+        dest: /home/svpb-signage/.config/systemd/user/signage-cloud-sync.timer
+        src: files/signage-cloud-sync.timer
+        owner: svpb-signage
+        group: svpb-signage
+    - name: Ensure cloud synchronization credential file is placed
+      ansible.builtin.template:
+        dest: /home/svpb-signage/.netrc
+        src: files/dotnetrc
         owner: svpb-signage
         group: svpb-signage
     - name: Ensure video service is placed

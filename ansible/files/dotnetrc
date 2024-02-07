@@ -1,0 +1,3 @@
+machine {{ cloud_domain }}
+login {{ cloud_user }}
+password {{ cloud_auth_token }}

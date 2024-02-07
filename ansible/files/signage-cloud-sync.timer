@@ -1,0 +1,8 @@
+[Unit]
+Description=Run cloud synchronization regularly
+
+[Timer]
+OnUnitInactiveSec=30min
+
+[Install]
+WantedBy=timers.target
