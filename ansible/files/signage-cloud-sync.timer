@@ -2,6 +2,7 @@
 Description=Run cloud synchronization regularly
 
 [Timer]
+OnActiveSec=1min
 OnUnitInactiveSec=30min
 
 [Install]
