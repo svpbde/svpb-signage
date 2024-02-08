@@ -1,0 +1,9 @@
+[Unit]
+Description=Run video regularly
+
+[Timer]
+OnActiveSec=1min
+OnUnitInactiveSec=1min
+
+[Install]
+WantedBy=timers.target

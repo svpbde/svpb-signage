@@ -4,7 +4,7 @@ PartOf=graphical-session.target
 
 [Service] 
 ExecStart=mpv --fullscreen /opt/svpb-signage/content/video.mp4
-Type=simple
+Type=oneshot
 Restart=on-failure 
 
 [Install] 
