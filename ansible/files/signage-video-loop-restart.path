@@ -1,0 +1,5 @@
+[Path]
+PathChanged=/opt/svpb-signage/content/video.mp4
+
+[Install] 
+WantedBy=xsession.target

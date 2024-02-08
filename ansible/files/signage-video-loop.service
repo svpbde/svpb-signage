@@ -3,7 +3,7 @@ Description=Play fullscreen video
 PartOf=graphical-session.target
 
 [Service] 
-ExecStart=mpv --fullscreen /opt/svpb-signage/content/video.mp4
+ExecStart=mpv --fullscreen --loop=inf /opt/svpb-signage/content/video.mp4
 Type=simple
 Restart=on-failure 
 

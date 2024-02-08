@@ -114,6 +114,9 @@
         - xsession.target
         - signage-cloud-sync.timer
         - signage-video.service
+        - signage-video-loop.service
+        - signage-video-loop-restart.path
+        - signage-video-loop-restart.service
         - signage-website.service
       ansible.builtin.copy:
         dest: /home/svpb-signage/.config/systemd/user/{{ item }}

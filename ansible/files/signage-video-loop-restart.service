@@ -1,0 +1,10 @@
+[Unit]
+Description=Restart video player if video changed on disk
+PartOf=graphical-session.target
+
+[Service] 
+ExecStart=/usr/bin/systemctl restart --user signage-video-loop.service
+Type=oneshot
+
+[Install] 
+WantedBy=xsession.target
