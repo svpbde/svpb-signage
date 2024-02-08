@@ -1,7 +1,19 @@
 svpb-signage
 ============
 
-This is the documentation of the digital signage solution deployed in our sailing club (Segler-Verein Paderborn e.V., SVPB).
+This is a simple digital signage solution deployed in our sailing club (Segler-Verein Paderborn e.V., SVPB).
+
+Features
+--------
+* Display a single video in an infinite loop
+* Display a website
+* Alternate between website and video 
+
+To keep the complexity low, the feature set is not enormous.
+A single video file is chosen as interchange format.
+* Video gets updated via owncloud/nextcloud (is already in use, no need to maintain additional software)
+* Video can be created with creators favourite software (e.g. exported from PowerPoint presentations)
+* Looking at video file at home gives good representation of later appearance on signage system
 
 Hardware
 --------
@@ -22,10 +34,11 @@ Software
 --------
 The computer runs Debian with Openbox.
 
-### Preparing ansible configuration
-In `ansible\vars`, copy `cloud_vars.yml.example` to `cloud_vars.yml` and fill in the data of your nextcloud or owncloud hosting your signage video.
-
 ### Installation
+
+* Prepare ansible configuration
+    * In `ansible\vars`, copy `cloud_vars.yml.example` to `cloud_vars.yml`
+    * Fill in the data of your nextcloud or owncloud hosting your signage video
 * Install debian on the signage computer. Installer settings:
     * System name: `signage`
     * Create a normal user named `svpb` (this is not the signage user, which will be created lateron via ansible)
@@ -37,13 +50,34 @@ In `ansible\vars`, copy `cloud_vars.yml.example` to `cloud_vars.yml` and fill in
     * Run ansible: `ansible-playbook playbook.yml -i inventory.yml --ask-become-pass`
 * Reboot
 
-### Testing
-The system can easily be tested on a virtual machine.
-Using the Vagrantfile in this repo with Vagrant automatically spins up a working VM.
-However, describing how to use Vagrant is out of the scope of this document.
+### Usage
+The behaviour of the signage system is defined by systemd user services.
+The user `svpb-signage` has to be used as he is the one who owns the running X session (auto login).
 
-### Controlling systemd user services over SSH
+#### Controlling system over SSH
 Manage systemd user services for `svpb-signage`:
 ```
 sudo -u svpb-signage XDG_RUNTIME_DIR=/run/user/$(id -u svpb-signage) systemctl --user <your systemd command>
 ```
+Manually play video on the screen without systemd (for debugging):
+```
+sudo -u svpb-signage DISPLAY=:0 mpv video.mp4
+```
+
+#### Infinite video loop
+Enable and start the services `signage-cloud-sync.timer` and `signage-video-loop`.
+Also enable `signage-video-loop-restart.path`.
+
+#### Display website
+Adapt, enable and start `signage-website`.
+
+#### Display website and video
+Adapt, enable and start `signage-website`.
+The website stays in the background.
+Enable and start `signage-cloud-sync.timer` and `signage-video.timer`.
+This starts the video in the foreground regularly.
+
+### Testing
+The system can easily be tested on a virtual machine.
+Using the Vagrantfile in this repo with Vagrant automatically spins up a working VM.
+However, describing how to use Vagrant is out of the scope of this document.
