@@ -3,7 +3,8 @@ Description=Run video regularly
 
 [Timer]
 OnActiveSec=1min
-OnUnitInactiveSec=1min
+OnUnitInactiveSec=30sec
+AccuracySec=1sec
 
 [Install]
 WantedBy=timers.target
